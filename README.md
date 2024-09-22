@@ -1,7 +1,7 @@
 # Script export files web gzip decimal Arduino
 Repository of a Python Script to export WEB project to Gzip encoded in decimal array.
 
-- How to Use - Command Line (CMD)
+- [How to Use - Command Line (CMD)](#how-to-use---command-line-cmd)
   - Practical Example of Use in CMD
 - How to Use - Bootstrap Studio
 - Settings
