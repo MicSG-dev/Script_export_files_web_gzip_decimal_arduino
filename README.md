@@ -2,16 +2,16 @@
 Repository of a Python Script to export WEB project to Gzip encoded in decimal array.
 
 - [How to Use - Command Line (CMD)](#how-to-use---command-line-cmd)
-  - Practical Example of Use in CMD
-- How to Use - Bootstrap Studio
-- Settings
-  - Default Configuration
-  - Customizing the Export Path
-- Understanding the Exported File
-  - Example of Export
-- Using the Exported File
-- Note
-- Benefits of Gzip in the Project
+  - [Practical Example of Use in CMD](#practical-example-of-use-in-cmd)
+- [How to Use - Bootstrap Studio](#how-to-use---bootstrap-studio)
+- [Settings](#settings)
+  - [Default Configuration](#default-configuration)
+  - [Customizing the Export Path](#customizing-the-export-path)
+- [Understanding the Exported File](#understanding-the-exported-file)
+  - [Example of Export](#example-of-export)
+- [Using the Exported File](#using-the-exported-file)
+- [Note](#note)
+- [Benefits of Gzip in the Project](#benefits-of-gzip-in-the-project)
 
 ## How to Use - Command Line (CMD)
 1. Download the executable from [Releases](github.com/MicSG-dev/Script_export_files_web_gzip_decimal_arduino/releases);
