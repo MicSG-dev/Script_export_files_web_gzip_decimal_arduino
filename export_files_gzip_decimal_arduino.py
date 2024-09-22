@@ -59,18 +59,15 @@ if __name__ == '__main__':
                         caminho_header_file = path_folder_export_gzip + path_relative_file.replace(extensao_arquivo,
                                                                                                    ".h")
 
-                        with open(caminho_completo, 'r', encoding="utf-8") as fileData:
+                        with open(caminho_completo, 'rb') as fileData:
                             data = fileData.read()
-
-                            # Converter a string HTML para bytes
-                            file_encoded = data.encode('utf-8')
 
                             # Criar um buffer para armazenar os dados gzip compactados
                             buffer = io.BytesIO()
 
                             # Compactar os bytes da string HTML usando gzip
                             with gzip.GzipFile(fileobj=buffer, mode='wb') as f:
-                                f.write(file_encoded)
+                                f.write(data)
 
                             # Obter os bytes compactados
                             gzip_bytes = buffer.getvalue()
