@@ -82,7 +82,13 @@ if __name__ == '__main__':
                                  arquivo != 'web_gzip.h'):
                         
                         counter_files += 1
-                        print(arquivo)
+                        
+                        if not diretorio.endswith("\\"):
+                            print(diretorio + "\\" + arquivo)
+                        else:
+                            print(diretorio + arquivo)
+                        
+                        
                         path_relative_file = diretorio.replace(caminho_recebido_bootstrap, '') + '\\' + arquivo
                         caminho_completo = caminho_recebido_bootstrap + path_relative_file
                         nome_arquivo = arquivo.split(".")[0]
