@@ -67,6 +67,8 @@ When performing the first export, the file `___config_export.txt`. will be creat
 On the first run, the file will contain the following:
 ```
 PATH_ARDUINO_INCLUDE_FOLDER=
+FILES_FOR_NOT_EXPORTING=
+FOLDERS_FOR_NOT_EXPORTING=
 
 ```
 The default export location is within the `data` folder (automatically created by the executable) located in your web project directory. 
@@ -76,6 +78,17 @@ If you want to change the export location, simply add the path of the new locati
 ```
 PATH_ARDUINO_INCLUDE_FOLDER=G:\Documentos\PlatformIO\Projects\HelloWorld\include
 
+```
+### Setting files to be ignored in compression:
+If you want some files not to be compressed and not included in the exported `web_gzip.h` file, simply add the file names separated by `|` in front of the `FILES_FOR_NOT_EXPORTING` parameter. Usage example:
+```
+FILES_FOR_NOT_EXPORTING=.htaccess|index_full.html
+```
+
+### Setting folders to be ignored in compression:
+If you want files in some folders not to be compressed and not included in the exported `web_gzip.h` file, just add the folder paths separated by `|` in front of the `FOLDERS_FOR_NOT_EXPORTING` parameter (remember: all subfolders and files inside them will not be compressed). Usage example:
+```
+FOLDERS_FOR_NOT_EXPORTING=\api|\others\test
 ```
 
 ## Understanding the Exported File
