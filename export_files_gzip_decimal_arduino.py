@@ -10,10 +10,14 @@ if __name__ == '__main__':
     caminho_recebido_bootstrap = sys.argv[1]
 
     path_arduino_include_folder = None
+    files_for_not_exporting = ""
+    folders_for_not_exporting = ""
 
     if not os.path.exists(caminho_recebido_bootstrap + "\\___config_export.txt"):
         with open(caminho_recebido_bootstrap + "\\___config_export.txt", 'w') as configFileCreate:
             configFileCreate.write('PATH_ARDUINO_INCLUDE_FOLDER=\n')
+            configFileCreate.write('FILES_FOR_NOT_EXPORTING=\n')
+            configFileCreate.write('FOLDERS_FOR_NOT_EXPORTING=\n')
 
     with open(caminho_recebido_bootstrap + "\\___config_export.txt", 'r') as configFile:
         linhas = configFile.readlines()
@@ -25,6 +29,17 @@ if __name__ == '__main__':
                         path_arduino_include_folder = None
                 except:
                     path_arduino_include_folder = None
+            if 'FILES_FOR_NOT_EXPORTING' in linha:
+                try:
+                    files_for_not_exporting = linha.split('=')[1].strip() or ""
+                except:
+                    files_for_not_exporting = ""
+            if 'FOLDERS_FOR_NOT_EXPORTING' in linha:
+                try:
+                    folders_for_not_exporting = linha.split('=')[1].strip() or ""
+                    folders_for_not_exporting = "|".join([caminho_recebido_bootstrap + parte for parte in folders_for_not_exporting.split("|")])
+                except:
+                    folders_for_not_exporting = ""
 
     if path_arduino_include_folder != None:
         path_folder_export_gzip = path_arduino_include_folder
@@ -49,9 +64,25 @@ if __name__ == '__main__':
             web_gzip.write("#include \"Arduino.h\"\n\n")
             web_gzip.write("namespace web_gzip\n{")
 
+            print("Compressed files:")
+            print()
+            counter_files = 0
             for diretorio, subpastas, arquivos in os.walk(caminho_recebido_bootstrap):
                 for arquivo in arquivos:
-                    if arquivo != 'script.bat' and arquivo != 'export_files_gzip_decimal_arduino.py' and arquivo != 'export_files_gzip_decimal_arduino.exe' and arquivo != '___config_export.txt' and arquivo != 'web_gzip.h':
+
+                    if diretorio == caminho_recebido_bootstrap:
+                        diretorio = diretorio + "\\"
+                    
+                    if (arquivo != 'script.bat' and
+                         arquivo not in files_for_not_exporting.split('|') and
+                         (folders_for_not_exporting == "" or folders_for_not_exporting == caminho_recebido_bootstrap or not any(diretorio.startswith(folder_not_export) for folder_not_export in folders_for_not_exporting.split("|"))) and
+                           arquivo != 'export_files_gzip_decimal_arduino.py' and
+                             arquivo != 'export_files_gzip_decimal_arduino.exe' and
+                               arquivo != '___config_export.txt' and
+                                 arquivo != 'web_gzip.h'):
+                        
+                        counter_files += 1
+                        print(arquivo)
                         path_relative_file = diretorio.replace(caminho_recebido_bootstrap, '') + '\\' + arquivo
                         caminho_completo = caminho_recebido_bootstrap + path_relative_file
                         nome_arquivo = arquivo.split(".")[0]
@@ -92,8 +123,9 @@ if __name__ == '__main__':
                             web_gzip.write(file_comprimido)
 
             web_gzip.write('}\n\n#endif')
+            print()
             print(
-                "Export completed successfully. Generated file path: " + path_folder_export_gzip + "\\" + "web_gzip.h")
+                f"Export completed successfully with {counter_files} compressed files. Generated file path: " + path_folder_export_gzip + "\\" + "web_gzip.h")
     except PermissionError:
         date_time = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
