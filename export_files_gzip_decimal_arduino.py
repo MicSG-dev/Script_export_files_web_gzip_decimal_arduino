@@ -85,12 +85,15 @@ if __name__ == '__main__':
                         
                         if not diretorio.endswith("\\"):
                             print(diretorio + "\\" + arquivo)
+                            
                         else:
                             print(diretorio + arquivo)
+                            diretorio = diretorio[:-1]
                         
                         
-                        path_relative_file = diretorio.replace(caminho_recebido_bootstrap, '') + '\\' + arquivo
-                        caminho_completo = caminho_recebido_bootstrap + path_relative_file
+
+                        path_relative_file = diretorio.replace(caminho_recebido_bootstrap, '') + '\\' + arquivo                        
+                        caminho_completo = caminho_recebido_bootstrap + path_relative_file                        
                         nome_arquivo = arquivo.split(".")[0]
                         extensao_arquivo = arquivo.replace(nome_arquivo, "")
                         caminho_header_file = path_folder_export_gzip + path_relative_file.replace(extensao_arquivo,
