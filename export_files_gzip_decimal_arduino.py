@@ -37,7 +37,24 @@ if __name__ == '__main__':
             if 'FOLDERS_FOR_NOT_EXPORTING' in linha:
                 try:
                     folders_for_not_exporting = linha.split('=')[1].strip() or ""
-                    folders_for_not_exporting = "|".join([caminho_recebido_bootstrap + parte for parte in folders_for_not_exporting.split("|")])
+                    
+                    if folders_for_not_exporting != "":
+                        # Inicializa uma lista para armazenar os caminhos modificados
+                        folders = []
+
+                        # Itera sobre cada parte separada pelo caractere '|'
+                        for parte in folders_for_not_exporting.split("|"):
+                            
+                            caminho_completo = caminho_recebido_bootstrap + parte
+                            if parte != "\\":
+                                caminho_completo += "\\"
+                            
+                            # Adiciona o caminho completo à lista
+                            folders.append(caminho_completo)
+
+                        # Junta todos os caminhos com o caractere '|'
+                        folders_for_not_exporting = "|".join(folders)
+                    
                 except:
                     folders_for_not_exporting = ""
 
@@ -55,33 +72,37 @@ if __name__ == '__main__':
 
         if not os.path.exists(caminho_recebido_bootstrap + "\\data"):
             os.makedirs(caminho_recebido_bootstrap + "\\data")
-
+    
     try:
         with open(path_folder_export_gzip + "\\" + "web_gzip.h", 'w') as web_gzip:
-
+            
             web_gzip.write(f'#ifndef WEB_GZIP_h' + '\n')
             web_gzip.write(f'#define WEB_GZIP_h' + '\n\n')
             web_gzip.write("#include \"Arduino.h\"\n\n")
             web_gzip.write("namespace web_gzip\n{")
-
-            print("Compressed files:")
-            print()
+            
+            
+            print("Compressed files:")            
+            print()       
+            
             counter_files = 0
             for diretorio, subpastas, arquivos in os.walk(caminho_recebido_bootstrap):
                 for arquivo in arquivos:
 
                     if diretorio == caminho_recebido_bootstrap:
                         diretorio = diretorio + "\\"
+
                     
                     if (arquivo != 'script.bat' and
                          arquivo not in files_for_not_exporting.split('|') and
-                         (folders_for_not_exporting == "" or folders_for_not_exporting == caminho_recebido_bootstrap or not any(diretorio.startswith(folder_not_export) for folder_not_export in folders_for_not_exporting.split("|"))) and
+                         (folders_for_not_exporting == "" or folders_for_not_exporting == caminho_recebido_bootstrap or not any((diretorio + "\\").startswith(folder_not_export) for folder_not_export in folders_for_not_exporting.split("|"))) and
                            arquivo != 'export_files_gzip_decimal_arduino.py' and
                              arquivo != 'export_files_gzip_decimal_arduino.exe' and
                                arquivo != '___config_export.txt' and
                                  arquivo != 'web_gzip.h'):
                         
                         counter_files += 1
+                        
                         
                         if not diretorio.endswith("\\"):
                             print(diretorio + "\\" + arquivo)
